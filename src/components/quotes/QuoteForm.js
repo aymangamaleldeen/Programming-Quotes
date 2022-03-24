@@ -1,5 +1,6 @@
-import { useRef, useState, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { Prompt } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import Card from "../UI/Card";
 import LoadingSpinner from "../UI/LoadingSpinner";
@@ -7,14 +8,17 @@ import classes from "./QuoteForm.module.css";
 
 const QuoteForm = (props) => {
   const [isEntering, setIsEntering] = useState(false);
-  const authorInputRef = useRef();
-  const textInputRef = useRef();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-  function submitFormHandler(event) {
-    event.preventDefault();
-    const enteredAuthor = authorInputRef.current.value;
-    const enteredText = textInputRef.current.value;
-    props.onAddQuote({ author: enteredAuthor, text: enteredText });
+
+  function submitFormHandler(data) {
+    props.onAddQuote(data);
+    reset();
   }
 
   function focusHandler() {
@@ -36,7 +40,7 @@ const QuoteForm = (props) => {
         <form
           onFocus={focusHandler}
           className={classes.form}
-          onSubmit={submitFormHandler}
+          onSubmit={handleSubmit(submitFormHandler)}
         >
           {props.isLoading && (
             <div className={classes.loading}>
@@ -46,11 +50,21 @@ const QuoteForm = (props) => {
 
           <div className={classes.control}>
             <label htmlFor="author">Author</label>
-            <input type="text" id="author" ref={authorInputRef} />
+            <input
+              type="text"
+              id="author"
+              {...register("author", { required: "Author is required" })}
+            />
+            <p className={classes.invalid}>{errors.author?.message}</p>
           </div>
           <div className={classes.control}>
             <label htmlFor="text">Text</label>
-            <textarea id="text" rows="5" ref={textInputRef}></textarea>
+            <textarea
+              id="text"
+              rows="5"
+              {...register("text", { required: "the text is required" })}
+            ></textarea>
+            <p className={classes.invalid}>{errors.text?.message}</p>
           </div>
           <div className={classes.actions}>
             <button onClick={clickHandler} className="btn">

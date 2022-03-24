@@ -1,8 +1,8 @@
 .quote {
   background-color: #162b2b;
   color: white;
-  border-radius: 6px;
-  padding: 3rem;
+  border-radius: 20px;
+  padding: 3rem 0.5rem;
   margin: 3rem auto;
   width: 90%;
   max-width: 40rem;

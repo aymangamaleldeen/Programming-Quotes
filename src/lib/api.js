@@ -1,4 +1,5 @@
-const FIREBASE_DOMAIN = "https://quotes-103d3-default-rtdb.firebaseio.com/";
+const FIREBASE_DOMAIN =
+  "https://programming-quotes-615e6-default-rtdb.firebaseio.com/";
 
 export async function getAllQuotes() {
   const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`);
@@ -25,7 +26,6 @@ export async function getAllQuotes() {
 export async function getSingleQuote(quoteId) {
   const response = await fetch(`${FIREBASE_DOMAIN}/quotes/${quoteId}.json`);
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(data.message || "Could not fetch quote.");
   }
